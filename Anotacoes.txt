@@ -1,0 +1,5 @@
+getters 
+met. obr
+constr
+
+Tudo que for enviar herda de Enviavel
