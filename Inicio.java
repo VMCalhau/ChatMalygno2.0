@@ -1,3 +1,12 @@
+import javax.swing.JTextField;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.io.*;
+import java.net.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,12 +19,19 @@
  * @author u18191
  */
 public class Inicio extends javax.swing.JFrame {
-
+	private Socket conexao;
+	private ObjectOutputStream transmissor;
     /**
      * Creates new form Sala
      */
     public Inicio() {
         initComponents();
+    }
+
+    public Inicio(Socket conexao, ObjectOutputStream transmissor) {
+		initComponents();
+		this.conexao = conexao;
+		this.transmissor = transmissor;
     }
 
     /**
@@ -48,6 +64,18 @@ public class Inicio extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 24)); // NOI18N
         jButton1.setText("Enter");
+        jButton1.addActionListener(new ActionListener() {
+
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+				try
+				{
+					transmissor.writeObject(jTextField1.getText());
+				}
+				catch (Exception erro)
+				{}
+		    }
+		});
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setText("Salas disponíveis:");

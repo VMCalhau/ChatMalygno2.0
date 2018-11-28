@@ -5,7 +5,7 @@ import java.net.*;
 public class Salas
 {
 	private ArrayList<Sala> salas;
-	private int quantidade = 0;
+	private int quantidade;
 
 	public Salas(){
 		salas = new ArrayList<Sala>();

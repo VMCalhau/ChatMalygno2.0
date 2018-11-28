@@ -3,22 +3,16 @@ import java.io.*;
 public class CuidadoraDeUsuario extends Thread  // só vai cuidar de receber
 {
 	private Usuario usuario;
+	private Socket conexao;
+    private Salas salas;
+
 	public CuidadoraDeUsuario (Socket conexao, Salas salas) throws Exception
 	{
-		ObjectOutputStream transmissor = new ObjectOutputStream(conexao.getOutputStream());
-		ObjectInputStream receptor = new ObjectInputStream(conexao.getInputStream());
-		String sala = "", nome = "";
+		if (conexao == null || salas == null)
+			throw new Exception("Informacoes ausentes!");
 
-			do
-			{
-				transmissor.writeString("Digite a sala: ");
-				sala = receptor.read();
-			}
-			while ();
-
-			transmissor.writeString("Digite seu nome de usuário: ");
-			nome = receptor.read();
-			usuario = new Usuario(conexao, transmissor, receptor, nome, );
+		this.conexao = conexao;
+        this.salas = salas;
 
 		//   *declarar e instanciar OOS e OIS com o socket recebido
 		//  *(LOOP) interagir com o usuario via OOS e OIS ate descobrir o nome da sala em que ele deseja entrar, informando sala cheia, e o nome que ele deseja usar informando nome invalido ou usado
@@ -33,6 +27,22 @@ public class CuidadoraDeUsuario extends Thread  // só vai cuidar de receber
 
 	public void run()
 	{
+		ObjectOutputStream transmissor = new ObjectOutputStream(conexao.getOutputStream());
+		ObjectInputStream receptor = new ObjectInputStream(conexao.getInputStream());
+		String sala = "", nome = "";
+
+		nome = receptor.readObject();
+		sala = receptor.readObject();
+
+
+		usuario = new Usuario(conexao, transmissor, receptor, nome, );
+		// interagir com o usr via OOS e OIS ate descobrir o nome da sala em que ele deseja entrar, eventualmente, informando sala cheia
+		// procurar em salas a sala com o nome desejado
+		// interagir com o usr via OOS e OIS ate descobrir o nome que ele deseja usar, eventualmente, informando nome invalido ou ja usado
+		// instanciar o Usuario, fornecendo, conexao, OOS, OIS, nome e sala
+		// fazer varias vezes this.usuario.envia(new AvisoDeEntradaDaSala(i)), onde i é o nome de algum usuario que ja estava na sala
+		// fazer varias vezes i.envia(new AvisoDeEntradaDaSala(usuario.getNome()), onde i é o nome de algum usuario que ja estava na sala
+        // incluir o usuario na sala
 		// RECEBE PEDIDOS DE SAIR DA SALA OU MENSAGEM
 		Enviavel recebido = null;
 		do
